@@ -1,4 +1,4 @@
-package betclic.com.betclic.leaderboard.routes.request
+package com.betclic.leaderboard.routes.request
 
 import kotlinx.serialization.Serializable
 

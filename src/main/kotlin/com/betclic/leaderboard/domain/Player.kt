@@ -1,4 +1,4 @@
-package betclic.com.betclic.leaderboard.domain
+package com.betclic.leaderboard.domain
 
 import PlayerId
 

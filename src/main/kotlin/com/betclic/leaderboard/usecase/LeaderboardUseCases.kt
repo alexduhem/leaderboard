@@ -1,6 +1,6 @@
-package betclic.com.betclic.leaderboard.usecase
+package com.betclic.leaderboard.usecase
 
-import betclic.com.betclic.leaderboard.domain.Player
+import com.betclic.leaderboard.domain.Player
 
 class LeaderboardUseCases {
 

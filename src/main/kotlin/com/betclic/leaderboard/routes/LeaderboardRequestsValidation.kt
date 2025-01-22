@@ -1,6 +1,6 @@
-package betclic.com.betclic.leaderboard.routes
+package com.betclic.leaderboard.routes
 
-import betclic.com.betclic.leaderboard.routes.request.CreatePlayerRequest
+import com.betclic.leaderboard.routes.request.CreatePlayerRequest
 import io.ktor.server.application.*
 import io.ktor.server.plugins.requestvalidation.*
 
@@ -9,8 +9,7 @@ fun Application.configureRequestsValidation() {
         validate<CreatePlayerRequest> { player ->
             if (player.slug.isBlank()) {
                 ValidationResult.Invalid("A player slug must be provided")
-            }
-            else ValidationResult.Valid
+            } else ValidationResult.Valid
         }
     }
 }

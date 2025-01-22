@@ -1,6 +1,6 @@
-package betclic.com.betclic.plugins
+package com.betclic.plugins
 
-import betclic.com.betclic.leaderboard.usecase.LeaderboardUseCases
+import com.betclic.leaderboard.usecase.LeaderboardUseCases
 import io.ktor.server.application.*
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

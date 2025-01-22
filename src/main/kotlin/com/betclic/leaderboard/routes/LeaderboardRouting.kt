@@ -1,8 +1,8 @@
-package betclic.com.betclic.leaderboard.routes
+package com.betclic.leaderboard.routes
 
-import betclic.com.betclic.leaderboard.domain.dto.toDto
-import betclic.com.betclic.leaderboard.routes.request.CreatePlayerRequest
-import betclic.com.betclic.leaderboard.usecase.LeaderboardUseCases
+import com.betclic.leaderboard.domain.dto.toDto
+import com.betclic.leaderboard.routes.request.CreatePlayerRequest
+import com.betclic.leaderboard.usecase.LeaderboardUseCases
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

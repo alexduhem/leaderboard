@@ -1,4 +1,4 @@
-package betclic.com.betclic.leaderboard.domain.dto
+package com.betclic.leaderboard.domain.dto
 
 import kotlinx.serialization.Serializable
 

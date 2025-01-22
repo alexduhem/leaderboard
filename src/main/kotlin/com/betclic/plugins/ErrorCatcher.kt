@@ -1,4 +1,4 @@
-package betclic.com.betclic.plugins
+package com.betclic.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*
