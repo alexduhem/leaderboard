@@ -12,8 +12,8 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureDependencyInjection()
     configureSerialization()
+    configureDependencyInjection()
     configureLeaderboardRouting()
     configureRequestsValidation()
     configureErrorCatcher()

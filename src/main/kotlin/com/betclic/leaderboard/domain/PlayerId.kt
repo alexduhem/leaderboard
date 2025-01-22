@@ -8,6 +8,10 @@ data class PlayerId @OptIn(ExperimentalUuidApi::class) constructor(val uuid: Uui
             return PlayerId(Uuid.random())
         }
 
+        @OptIn(ExperimentalUuidApi::class)
+        fun fromString(aString:String): PlayerId {
+            return PlayerId(Uuid.parse(aString))
+        }
     }
 
     @OptIn(ExperimentalUuidApi::class)
