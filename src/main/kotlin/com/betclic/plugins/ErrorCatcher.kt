@@ -1,16 +1,17 @@
 package com.betclic.plugins
 
-import com.betclic.leaderboard.domain.PlayerErrors
+import com.betclic.leaderboard.domain.ApiErrors
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.requestvalidation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 
-fun PlayerErrors.httpCode(): HttpStatusCode {
+fun ApiErrors.httpCode(): HttpStatusCode {
     return when (this) {
-        is PlayerErrors.PlayerAlreadyExistsError -> HttpStatusCode.Conflict
-        is PlayerErrors.PlayerNotFoundError -> HttpStatusCode.NotFound
+        is ApiErrors.PlayerAlreadyExistsError -> HttpStatusCode.Conflict
+        is ApiErrors.PlayerNotFoundError -> HttpStatusCode.NotFound
+        is ApiErrors.PlayerIdMalformedError -> HttpStatusCode.BadRequest
     }
 }
 
@@ -26,7 +27,7 @@ fun Application.configureErrorCatcher() {
                 )
             )
         }
-        exception<PlayerErrors> { call, cause ->
+        exception<ApiErrors> { call, cause ->
             call.respond(cause.httpCode(), mapOf(
                     "errorCode" to cause.errorCode,
                     "error" to cause.message
