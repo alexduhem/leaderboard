@@ -1,6 +1,9 @@
 ktor:
+  development: true
   application:
     modules:
-      - betclic.ApplicationKt.module
+      - betclic.com.betclic.ApplicationKt.module
   deployment:
+    watch:
+      - classes
     port: 8080
