@@ -38,8 +38,40 @@ dependencies {
     implementation("io.ktor:ktor-server-cio")
     implementation("io.ktor:ktor-server-status-pages")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.3.0")
+    implementation("org.mongodb:bson-kotlinx:5.3.0")
     implementation("io.ktor:ktor-server-config-yaml")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("io.mockk:mockk:1.13.16")
 }
+
+
+tasks.register("databaseInstance") {
+    doLast {
+        val command = arrayOf("docker-compose", "up", "-d")
+        Runtime.getRuntime().exec(command)
+    }
+}
+
+tasks.register("testDatabaseInstance") {
+    doLast {
+        val command = arrayOf("docker-compose", "-f", "docker-compose.test.yaml", "up", "-d")
+        Runtime.getRuntime().exec(command)
+    }
+}
+
+tasks.test {
+    environment(
+        "MONGODB_URI" to "mongodb://test:test@localhost:27018",
+    )
+}
+
+tasks.test {
+    dependsOn("testDatabaseInstance")
+}
+
+tasks.named("run") {
+    dependsOn("databaseInstance")
+}
+

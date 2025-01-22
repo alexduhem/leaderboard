@@ -12,8 +12,9 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    val mongoUri = System.getenv("MONGODB_URI") ?: "mongodb://user:dev@localhost:27017"
     configureSerialization()
-    configureDependencyInjection()
+    configureDependencyInjection(mongoUri)
     configureLeaderboardRouting()
     configureRequestsValidation()
     configureErrorCatcher()

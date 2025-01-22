@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mongodb_test:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    container_name: leaderboard_testmongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=test
+      - MONGO_INITDB_ROOT_PASSWORD=test
+      - MONGO_INITDB_DATABASE=leaderboard
+    ports:
+      - 27018:27017
