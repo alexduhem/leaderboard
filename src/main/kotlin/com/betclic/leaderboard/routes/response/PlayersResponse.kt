@@ -1,6 +1,6 @@
 package com.betclic.leaderboard.routes.response
 
-import com.betclic.leaderboard.domain.dto.PlayerDto
+import com.betclic.leaderboard.routes.dto.PlayerDto
 import kotlinx.serialization.Serializable
 
 @Serializable

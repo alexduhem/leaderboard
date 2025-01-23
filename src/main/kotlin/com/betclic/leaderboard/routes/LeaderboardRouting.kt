@@ -1,7 +1,8 @@
 package com.betclic.leaderboard.routes
 
 import com.betclic.leaderboard.domain.Player
-import com.betclic.leaderboard.domain.dto.toDto
+import com.betclic.leaderboard.routes.dto.PlayerWithRankDto
+import com.betclic.leaderboard.routes.dto.toDto
 import com.betclic.leaderboard.routes.request.CreatePlayerRequest
 import com.betclic.leaderboard.routes.request.PatchPlayerRequest
 import com.betclic.leaderboard.routes.response.PlayersResponse
@@ -30,14 +31,16 @@ fun Application.configureLeaderboardRouting() {
         }
         get("/players/{id}") {
             val id = call.parameters.getOrFail("id")
-            val player = leaderboardUseCases.findPlayer(id)
-            call.respond(HttpStatusCode.OK, player.toDto())
+            val playerAndRank = leaderboardUseCases.findPlayer(id)
+            call.respond(HttpStatusCode.OK, PlayerWithRankDto.fromPlayerAndRank(playerAndRank))
         }
         patch("/players/{id}") {
             val body = call.receive<PatchPlayerRequest>()
             val id = call.parameters.getOrFail("id")
-            leaderboardUseCases.updatePlayerPoint(id, body.points)
-            call.respond(HttpStatusCode.NoContent)
+            call.respond(
+                HttpStatusCode.OK,
+                PlayerWithRankDto.fromPlayerAndRank(leaderboardUseCases.updatePlayerPoint(id, body.points))
+            )
         }
         delete("/players") {
             leaderboardUseCases.deletePlayers()

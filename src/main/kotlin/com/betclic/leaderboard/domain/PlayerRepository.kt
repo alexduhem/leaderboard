@@ -8,12 +8,14 @@ interface PlayerRepository {
 
     suspend fun insertPlayer(player: Player)
 
-    suspend fun updatePlayerPoints(playerId: PlayerId, points: Int)
+    suspend fun updatePlayerPoints(playerId: PlayerId, points: Int):Player?
 
     suspend fun findPlayer(playerId: PlayerId): Player?
 
     suspend fun getAllPlayers(): List<Player>
 
     suspend fun deletePlayers()
+
+    suspend fun findPlayerRank(player: Player): Long
 
 }

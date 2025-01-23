@@ -4,6 +4,7 @@ import PlayerId
 import com.betclic.leaderboard.domain.Player
 import com.betclic.leaderboard.domain.PlayerRepository
 import com.mongodb.client.model.Filters.eq
+import com.mongodb.client.model.Filters.gt
 import com.mongodb.client.model.Sorts
 import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoClient
@@ -29,19 +30,24 @@ class MongoPlayerRepository(mongoClient: MongoClient) : PlayerRepository {
         playerCollection.insertOne(player.toDao())
     }
 
-    override suspend fun updatePlayerPoints(playerId: PlayerId, points: Int) {
-        playerCollection.updateOne(
+    override suspend fun updatePlayerPoints(playerId: PlayerId, points: Int): Player? {
+        val player = playerCollection.findOneAndUpdate(
             eq(PlayerDao::_id.name, playerId.toString()),
             Updates.set(PlayerDao::points.name, points)
         )
+        return player?.copy(points = points)?.toDomain()
     }
 
     override suspend fun findPlayer(playerId: PlayerId): Player? {
         return playerCollection.find(eq(PlayerDao::_id.name, playerId.toString())).firstOrNull()?.toDomain()
     }
 
+    override suspend fun findPlayerRank(player: Player): Long {
+        return playerCollection.countDocuments(gt(Player::points.name, player.points)) + 1
+    }
+
     override suspend fun getAllPlayers(): List<Player> {
-        return playerCollection.find().sort(Sorts.descending(PlayerDao::points.name)).map { it.toDomain() }.toList()
+        return playerCollection.find().sort(Sorts.descending(PlayerDao::points.name, PlayerDao::slug.name)).map { it.toDomain() }.toList()
     }
 
     override suspend fun deletePlayers() {

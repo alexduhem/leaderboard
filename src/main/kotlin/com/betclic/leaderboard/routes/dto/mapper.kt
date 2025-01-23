@@ -1,4 +1,4 @@
-package com.betclic.leaderboard.domain.dto
+package com.betclic.leaderboard.routes.dto
 
 import com.betclic.leaderboard.domain.Player
 
