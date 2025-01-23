@@ -81,6 +81,21 @@ class ApplicationTest : KoinComponent {
     }
 
     @Test
+    fun shouldNotCreateUsersWithSameSlug() = testApplication {
+        val httpClient = buildHttpTestClient()
+        appTestSetup()
+        val aSlug = "Michel"
+        val dbClient = buildTestDbClient()
+        dbClient.insertPlayerDao(aFakePlayerDao(aSlug))
+        httpClient.post("/players") {
+            contentType(ContentType.Application.Json)
+            setBody(mapOf("slug" to aSlug))
+        }.apply {
+            assertEquals(HttpStatusCode.Conflict, status)
+        }
+    }
+
+    @Test
     fun shouldReturnAllThePlayersSortingByDescendingPoints() = testApplication {
         appTestSetup()
         val httpClient = buildHttpTestClient()

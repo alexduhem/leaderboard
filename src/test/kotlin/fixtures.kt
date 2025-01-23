@@ -12,7 +12,7 @@ fun buildRandomString(length: Int = 10): String {
         .joinToString("")
 }
 
-fun aFakePlayerDao(aSlug: String?, somePoints: Int?): PlayerDao {
+fun aFakePlayerDao(aSlug: String?, somePoints: Int? = 0): PlayerDao {
     return PlayerDao(
         PlayerId.random().toString(),
         aSlug ?: buildRandomString(),

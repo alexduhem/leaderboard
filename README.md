@@ -1,43 +1,36 @@
 # leaderboard
 
-This project was created using the [Ktor Project Generator](https://start.ktor.io).
+## Disclaimers
+- didn't touch kotlin since 2018
+- never used ktor before
+- never used mongo
 
-Here are some useful links to get you started:
+So I might not have the reflex of an expert, please be indulgent 😇
 
-- [Ktor Documentation](https://ktor.io/docs/home.html)
-- [Ktor GitHub page](https://github.com/ktorio/ktor)
-- The [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). You'll need
-  to [request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up) to join.
+## Postman collection
+To help you test the API, you can find a JSON export of the POSTMAN collection [here](./Learderboard.postman_collection.json
+)
 
-## Features
-
-Here's a list of features included in this project:
-
-| Name                                                                   | Description                                                                        |
-|------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [Koin](https://start.ktor.io/p/koin)                                   | Provides dependency injection                                                      |
-| [Routing](https://start.ktor.io/p/routing)                             | Provides a structured routing DSL                                                  |
-| [Content Negotiation](https://start.ktor.io/p/content-negotiation)     | Provides automatic content conversion according to Content-Type and Accept headers |
-| [kotlinx.serialization](https://start.ktor.io/p/kotlinx-serialization) | Handles JSON serialization using kotlinx.serialization library                     |
+## Architecture
+I follow a well-known architecture with layers (hexagonal, onion, clean, you name it), 
+the naming convention differ from one to another but the idea is the same : avoid strong dependency between component.
+![architecture](leaderboard-architecture.png "Leaderboard Architecture")
 
 ## Building & Running
+You need to have docker compose installed (I guess you have it already), both for running and testing, the container
+will be started automatically before (setup in gradle).
 
-To build or run the project, use one of the following tasks:
 
-| Task                          | Description                                                          |
-|-------------------------------|----------------------------------------------------------------------|
-| `./gradlew test`              | Run the tests                                                        |
-| `./gradlew build`             | Build everything                                                     |
-| `buildFatJar`                 | Build an executable JAR of the server with all dependencies included |
-| `buildImage`                  | Build the docker image to use with the fat JAR                       |
-| `publishImageToLocalRegistry` | Publish the docker image locally                                     |
-| `run`                         | Run the server                                                       |
-| `runDocker`                   | Run using the local docker image                                     |
+| Task             | Description                                                          |
+|------------------|----------------------------------------------------------------------|
+| `./gradlew test` | Run the tests                                                        |
+| `./gradlew run`  | Build everything                                                     |
 
-If the server starts successfully, you'll see the following output:
+## Testing strategy
+For this coding interview, I follow a more end-to-end testing strategy, with a real database (as I'm not an expert of Mongo, I prefer testing it instead of mocking it)
+I didn't write any unit tests for the service layer, for a real project, I would also have mock repository and unit test layers independently, it depends.
 
-```
-2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
-2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
-```
+I setup myself the docker container for the test database, I would consider using [testcontainers](https://testcontainers.com/) in a real project.
 
+## Path to improvement
+TODO
