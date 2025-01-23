@@ -38,4 +38,6 @@ I didn't write any unit tests for the service layer, for a real project, I would
 I setup myself the docker container for the test database, I would consider using [testcontainers](https://testcontainers.com/) in a real project.
 
 ## Path to improvement
-TODO
+- not all the endpoint are well tested
+- The GET /players does not return any rank for the players
+- we could probably avoid 2 request to mongo when asking for the rank when getting a player, by using aggregate/windowfield, I didnt dig further for this test to avoid being in a big tunnel
