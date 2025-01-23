@@ -8,6 +8,10 @@
 
 So I might not have the reflexes of an expert, please be indulgent 😇
 
+## troubleshooting with JDK
+I personally had issue when generating the ktor project with IntelliJ. (JDK issue)
+That's why I set the Java version to v19 manually [here](https://github.com/alexduhem/leaderboard/blob/7ae6f7f6bee735671cae9a08c1658fc3d71e4e32/build.gradle.kts#L29), feel free to set what's working for you
+
 ## Postman collection
 To help you test the API, you can find a JSON export of the POSTMAN collection [here](./Learderboard.postman_collection.json
 )
@@ -38,6 +42,7 @@ I didn't write any unit tests for the service layer, for a real project, I would
 I setup myself the docker container for the test database, I would consider using [testcontainers](https://testcontainers.com/) in a real project.
 
 ## Path to improvement
+- no CI/CD setup, maybe overkill for a coding test
 - not all the endpoint are well tested
 - The GET /players does not return any rank for the players
 - we could probably avoid 2 request to mongo when asking for the rank when getting a player, by using aggregate/windowfield, I didnt dig further for this test to avoid being in a big tunnel
