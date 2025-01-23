@@ -1,3 +1,4 @@
+import com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension
 val koin_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -6,7 +7,23 @@ plugins {
     kotlin("jvm") version "2.0.21"
     id("io.ktor.plugin") version "3.0.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
+    id("com.gradleup.shadow") version "8.3.1"
+    id("com.google.cloud.tools.appengine") version "2.8.0"
 }
+
+configure<AppEngineAppYamlExtension> {
+    stage {
+        setArtifact("build/libs/${project.name}-all.jar")
+    }
+    deploy {
+        version = "GCLOUD_CONFIG"
+        projectId = "GCLOUD_CONFIG"
+    }
+}
+
+
+
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(19))
