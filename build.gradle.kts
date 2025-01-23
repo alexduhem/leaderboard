@@ -41,6 +41,7 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.3.0")
     implementation("org.mongodb:bson-kotlinx:5.3.0")
     implementation("io.ktor:ktor-server-config-yaml")
+    implementation("io.ktor:ktor-server-cors")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("io.mockk:mockk:1.13.16")
