@@ -142,15 +142,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://0.0.0.0:8080/players",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/players",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"players"
 					]
@@ -206,7 +201,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"points\":\"1-\"\n}",
+					"raw": "{\n    \"points\":103\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -214,15 +209,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/players/8d92bb7c-e22a-47d4-a944-94f5e6c12cec",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/players/8d92bb7c-e22a-47d4-a944-94f5e6c12cec",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"8d92bb7c-e22a-47d4-a944-94f5e6c12cec"
