@@ -3,51 +3,26 @@ package betclic
 import PlayerId
 import com.betclic.infrastructure.Constants
 import com.betclic.infrastructure.PlayerDao
-import com.betclic.module
-import com.mongodb.kotlin.client.coroutine.MongoClient
-import io.ktor.client.*
+import com.betclic.leaderboard.routes.dto.PlayerWithRankDto
+import com.betclic.leaderboard.routes.response.PlayersResponse
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
 import io.mockk.every
 import io.mockk.mockkObject
-import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.ktor.ext.inject
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-fun ApplicationTestBuilder.appTestSetup() {
-    application {
-        module()
-        val mongoClient by inject<MongoClient>()
-        runBlocking {
-            mongoClient.getDatabase(Constants.MONGO_DB_NAME).getCollection<PlayerDao>(Constants.PLAYERS_COLLECTION)
-                .drop()
-        }
-    }
-}
-
-fun ApplicationTestBuilder.buildHttpTestClient(): HttpClient {
-    return createClient {
-        install(ContentNegotiation) {
-            json()
-        }
-    }
-}
 
 class ApplicationTest : KoinComponent {
-
 
     @Test
     fun aPlayerShouldBeCreatedWithAValidSlug() = testApplication {
         appTestSetup()
         val client = buildHttpTestClient()
-        val mongoClient by inject<MongoClient>()
+        val dbClient = buildTestDbClient()
         val aSlug = "Michel"
         val aFakeId = "1f61fbee-c399-4215-9d2c-3ec10d5c9450"
         mockkObject(PlayerId.Companion)
@@ -67,7 +42,7 @@ class ApplicationTest : KoinComponent {
             )
             assertEquals(
                 1,
-                mongoClient.getDatabase(Constants.MONGO_DB_NAME)
+                dbClient.getDatabase(Constants.MONGO_DB_NAME)
                     .getCollection<PlayerDao>(Constants.PLAYERS_COLLECTION)
                     .countDocuments()
             )
@@ -76,9 +51,9 @@ class ApplicationTest : KoinComponent {
 
     @Test
     fun aBadRequestIsThrownIfNoSlugProvided() = testApplication {
-        val client = buildHttpTestClient()
+        val httpClient = buildHttpTestClient()
         appTestSetup()
-        client.post("/players") {
+        httpClient.post("/players") {
             contentType(ContentType.Application.Json)
             setBody(mapOf("whatever" to "whatever"))
         }.apply {
@@ -88,9 +63,9 @@ class ApplicationTest : KoinComponent {
 
     @Test
     fun aBadRequestIsThrownIfABlankSlugProvided() = testApplication {
-        val client = buildHttpTestClient()
+        val httpClient = buildHttpTestClient()
         appTestSetup()
-        client.post("/players") {
+        httpClient.post("/players") {
             contentType(ContentType.Application.Json)
             setBody(mapOf("slug" to " "))
         }.apply {
@@ -100,8 +75,53 @@ class ApplicationTest : KoinComponent {
                     "error" to "A player slug must be provided",
                     "errorCode" to "BAD_REQUEST"
                 ),
-                body<Map<String, String>>()
+                body()
             )
+        }
+    }
+
+    @Test
+    fun shouldReturnAllThePlayersSortingByDescendingPoints() = testApplication {
+        appTestSetup()
+        val httpClient = buildHttpTestClient()
+        val dbClient = buildTestDbClient()
+        dbClient.insertPlayerDao(aFakePlayerDao("Michel", 50))
+        dbClient.insertPlayerDao(aFakePlayerDao("Antoine", 5))
+        dbClient.insertPlayerDao(aFakePlayerDao("Christophe", 100))
+        dbClient.insertPlayerDao(aFakePlayerDao("Marie", 5))
+        httpClient.get("/players").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val response = body<PlayersResponse>()
+            assertEquals(
+                listOf("Christophe", "Michel", "Antoine", "Marie"), response.players.map { it.slug }
+            )
+        }
+    }
+
+    @Test
+    fun shouldReturnAPlayerWithTheGoodRank() = testApplication {
+
+        appTestSetup()
+        val httpClient = buildHttpTestClient()
+        val dbClient = buildTestDbClient()
+        val michel = aFakePlayerDao("Michel", 50)
+        dbClient.insertPlayerDao(michel)
+        val antoine = aFakePlayerDao("Antoine", 5)
+        dbClient.insertPlayerDao(antoine)
+        val christophe = aFakePlayerDao("Christophe", 100)
+        dbClient.insertPlayerDao(christophe)
+
+
+        httpClient.get("/players/${michel._id}").apply {
+            assertEquals(2, body<PlayerWithRankDto>().rank)
+        }
+
+        httpClient.get("/players/${antoine._id}").apply {
+            assertEquals(3, body<PlayerWithRankDto>().rank)
+        }
+
+        httpClient.get("/players/${christophe._id}").apply {
+            assertEquals(1, body<PlayerWithRankDto>().rank)
         }
     }
 

@@ -47,7 +47,10 @@ class MongoPlayerRepository(mongoClient: MongoClient) : PlayerRepository {
     }
 
     override suspend fun getAllPlayers(): List<Player> {
-        return playerCollection.find().sort(Sorts.descending(PlayerDao::points.name, PlayerDao::slug.name)).map { it.toDomain() }.toList()
+        return playerCollection.find().sort(Sorts.orderBy(
+            Sorts.descending(PlayerDao::points.name),
+            Sorts.ascending(PlayerDao::slug.name))
+        ).map { it.toDomain() }.toList()
     }
 
     override suspend fun deletePlayers() {
