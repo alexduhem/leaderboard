@@ -4,7 +4,7 @@
 - didn't touch kotlin since 2018 
 - never used ktor before
 - never used mongo before
-- first time playing with Angular
+- first time playing with Angular ([front end repository](https://github.com/alexduhem/leaderboard-front))
 
 So I might not have the reflexes of an expert, please be indulgent 😇
 
@@ -13,8 +13,8 @@ To help you test the API, you can find a JSON export of the POSTMAN collection [
 )
 
 ## Deployment
-The API has been deployed on AppEngine, following the url https://betclic-leaderboard.ew.r.appspot.com/players
-The front end has been deployed on vercel : https://leaderboard-front-ashen.vercel.app/
+- The API has been deployed on AppEngine, following the url https://betclic-leaderboard.ew.r.appspot.com/players
+- The front end has been deployed on vercel : https://leaderboard-front-ashen.vercel.app/
 
 ## Architecture
 I follow a well-known architecture with layers (hexagonal, onion, clean, you name it), 
