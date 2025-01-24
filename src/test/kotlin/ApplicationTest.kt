@@ -123,6 +123,8 @@ class ApplicationTest : KoinComponent {
         dbClient.insertPlayerDao(michel)
         val antoine = aFakePlayerDao("Antoine", 5)
         dbClient.insertPlayerDao(antoine)
+        val charlotte = aFakePlayerDao("Charlotte", 50)
+        dbClient.insertPlayerDao(charlotte)
         val christophe = aFakePlayerDao("Christophe", 100)
         dbClient.insertPlayerDao(christophe)
 
@@ -132,7 +134,11 @@ class ApplicationTest : KoinComponent {
         }
 
         httpClient.get("/players/${antoine._id}").apply {
-            assertEquals(3, body<PlayerWithRankDto>().rank)
+            assertEquals(4, body<PlayerWithRankDto>().rank)
+        }
+
+        httpClient.get("/players/${charlotte._id}").apply {
+            assertEquals(2, body<PlayerWithRankDto>().rank)
         }
 
         httpClient.get("/players/${christophe._id}").apply {
