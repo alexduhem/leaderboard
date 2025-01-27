@@ -46,3 +46,5 @@ I setup myself the docker container for the test database, I would consider usin
 - not all the endpoint are well tested
 - The GET /players does not return any rank for the players
 - we could probably avoid 2 request to mongo when asking for the rank when getting a player, by using aggregate/windowfield, I didnt dig further for this test to avoid being in a big tunnel
+- an unique index  on the player slug could be useful to have the enforced uniqueness 
+- as mongo is "schemaless", on a real project, a tool to handle database change over time could be useful (like https://github.com/mongeez/mongeez) 
